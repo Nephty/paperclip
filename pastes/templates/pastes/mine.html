@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}My pastes — Paperclip{% endblock %}
+{% block content %}
+<div class="panel">
+  <h1>My pastes</h1>
+  {% if pastes %}
+  <table>
+    <thead>
+      <tr><th>Link</th><th>Created</th><th>Flags</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for paste in pastes %}
+      <tr>
+        <td><a href="{% url 'pastes:detail' paste.slug %}">{{ paste.slug }}</a></td>
+        <td class="muted">{{ paste.created_at|date:"Y-m-d H:i" }}</td>
+        <td>
+          <div class="flags">
+            {% if paste.has_password %}<span class="flag">🔒</span>{% endif %}
+            {% if paste.burn_after_read %}<span class="flag">🔥</span>{% endif %}
+            {% if paste.private %}<span class="flag">🙈</span>{% endif %}
+          </div>
+        </td>
+        <td>
+          <form method="post" action="{% url 'pastes:delete' paste.slug %}" data-confirm="Delete this paste? This can't be undone.">
+            {% csrf_token %}
+            <button type="submit" class="danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">You haven't created any pastes yet.</p>
+  {% endif %}
+  <div class="actions">
+    <a class="btn" href="{% url 'pastes:create' %}">New paste</a>
+  </div>
+</div>
+{% endblock %}

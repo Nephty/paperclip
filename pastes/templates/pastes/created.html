@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Paste created — Paperclip{% endblock %}
+{% block content %}
+<div class="panel">
+  <h1>Your paste is ready</h1>
+  <div class="link-box">
+    <input type="text" value="{{ paste_url }}" readonly id="paste-url" onclick="this.select()">
+    <button type="button" class="secondary" onclick="copyLink()">Copy</button>
+  </div>
+  <p class="flags">
+    {% if paste.has_password %}<span class="flag">🔒 password protected</span>{% endif %}
+    {% if paste.burn_after_read %}<span class="flag">🔥 burns after read</span>{% endif %}
+    {% if paste.private %}<span class="flag">🙈 private (only you)</span>{% endif %}
+    {% if not paste.has_password and not paste.burn_after_read and not paste.private %}<span class="flag">🌍 public</span>{% endif %}
+  </p>
+  <div class="actions">
+    <a class="btn" href="{{ paste_url }}">View paste</a>
+    <a class="btn secondary" href="{% url 'pastes:create' %}">Create another</a>
+    <a class="btn secondary" href="{% url 'pastes:mine' %}">My pastes</a>
+  </div>
+</div>
+<script>
+  function copyLink() {
+    const input = document.getElementById("paste-url");
+    input.select();
+    navigator.clipboard && navigator.clipboard.writeText(input.value);
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Password required — Paperclip{% endblock %}
+{% block content %}
+<div class="panel">
+  <h1>🔒 This paste is password protected</h1>
+  <form method="post">
+    {% csrf_token %}
+    <label for="{{ form.password.id_for_label }}">Password</label>
+    {{ form.password }}
+    {% if error %}<ul class="errorlist"><li>{{ error }}</li></ul>{% endif %}
+    <div class="actions">
+      <button type="submit">Unlock</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

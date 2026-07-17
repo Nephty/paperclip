@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ paste.slug }} — Paperclip{% endblock %}
+{% block content %}
+<div class="panel">
+  {% if burned %}
+  <p class="flag">🔥 This paste has been read and is now deleted. It won't be viewable again.</p>
+  {% endif %}
+  <pre>{{ content }}</pre>
+  <p class="muted">Created {{ paste.created_at|date:"Y-m-d H:i" }}</p>
+  {% if is_owner and not burned %}
+  <div class="actions">
+    <form method="post" action="{% url 'pastes:delete' paste.slug %}" data-confirm="Delete this paste? This can't be undone.">
+      {% csrf_token %}
+      <button type="submit" class="danger">Delete</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}New paste — Paperclip{% endblock %}
+{% block content %}
+<div class="panel panel-fill">
+  <h1>New paste</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.content }}
+    {% if form.content.errors %}<ul class="errorlist">{% for e in form.content.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+
+    <label for="{{ form.password.id_for_label }}">Password protect</label>
+    {{ form.password }}
+    <p class="help">{{ form.password.help_text }}</p>
+
+    <div class="checkbox-row">
+      {{ form.burn_after_read }}
+      <label for="{{ form.burn_after_read.id_for_label }}">{{ form.burn_after_read.label }}</label>
+    </div>
+    <div class="checkbox-row">
+      {{ form.private }}
+      <label for="{{ form.private.id_for_label }}">{{ form.private.label }}</label>
+    </div>
+
+    <div class="actions">
+      <button type="submit">Create paste</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Paste not found — Paperclip{% endblock %}
+{% block content %}
+<div class="panel">
+  <h1>🔍 Paste not found</h1>
+  <p>This paste doesn't exist, has already burned after being read, or isn't visible to you.</p>
+  <div class="actions">
+    <a class="btn" href="{% url 'pastes:create' %}">New paste</a>
+  </div>
+</div>
+{% endblock %}
