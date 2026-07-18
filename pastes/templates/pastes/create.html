@@ -7,6 +7,7 @@
     {% csrf_token %}
     {{ form.content }}
     {% if form.content.errors %}<ul class="errorlist">{% for e in form.content.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+    <p class="help"><span id="char-counter"></span>{{ limit_message }}</p>
 
     <label for="{{ form.password.id_for_label }}">Password protect</label>
     {{ form.password }}
@@ -16,14 +17,30 @@
       {{ form.burn_after_read }}
       <label for="{{ form.burn_after_read.id_for_label }}">{{ form.burn_after_read.label }}</label>
     </div>
+    {% if user.is_authenticated %}
     <div class="checkbox-row">
       {{ form.private }}
       <label for="{{ form.private.id_for_label }}">{{ form.private.label }}</label>
     </div>
+    {% endif %}
 
     <div class="actions">
       <button type="submit">Create paste</button>
     </div>
   </form>
 </div>
+{% if char_limit %}
+<script>
+  (function () {
+    var textarea = document.getElementById("{{ form.content.id_for_label }}");
+    var counter = document.getElementById("char-counter");
+    var limit = {{ char_limit }};
+    function update() {
+      counter.textContent = textarea.value.length + " / " + limit + " characters — ";
+    }
+    textarea.addEventListener("input", update);
+    update();
+  })();
+</script>
+{% endif %}
 {% endblock %}

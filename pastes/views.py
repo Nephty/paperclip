@@ -1,21 +1,25 @@
+from datetime import timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from .forms import PasteCreateForm, UnlockForm
-from .models import Paste
+from .forms import PasteCreateForm, UnlockForm, char_limit_for, char_limit_message
+from .models import EXPIRY_DAYS, Paste
 
 
-@login_required
 def create(request):
+    char_limit = char_limit_for(request.user)
+    limit_message = char_limit_message(request.user, char_limit)
     if request.method == "POST":
-        form = PasteCreateForm(request.POST)
+        form = PasteCreateForm(request.POST, char_limit=char_limit, limit_message=limit_message)
         if form.is_valid():
             paste = Paste(
-                owner=request.user,
+                owner=request.user if request.user.is_authenticated else None,
                 content=form.cleaned_data["content"],
                 burn_after_read=form.cleaned_data["burn_after_read"],
-                private=form.cleaned_data["private"],
+                private=form.cleaned_data["private"] if request.user.is_authenticated else False,
             )
             password = form.cleaned_data["password"]
             if password:
@@ -23,20 +27,24 @@ def create(request):
             paste.save()
             return redirect("pastes:created", slug=paste.slug)
     else:
-        form = PasteCreateForm()
-    return render(request, "pastes/create.html", {"form": form})
+        form = PasteCreateForm(char_limit=char_limit, limit_message=limit_message)
+    return render(
+        request, "pastes/create.html", {"form": form, "char_limit": char_limit, "limit_message": limit_message}
+    )
 
 
-@login_required
 def created(request, slug):
-    paste = get_object_or_404(Paste, slug=slug, owner=request.user)
+    paste = get_object_or_404(Paste, slug=slug)
+    is_owner = request.user.is_authenticated and request.user.id == paste.owner_id
+    if paste.owner_id is not None and not is_owner:
+        return render(request, "404.html", status=404)
     paste_url = request.build_absolute_uri(paste.get_absolute_url())
     return render(request, "pastes/created.html", {"paste": paste, "paste_url": paste_url})
 
 
 @login_required
 def mine(request):
-    pastes = request.user.pastes.all()
+    pastes = request.user.pastes.filter(created_at__gte=timezone.now() - timedelta(days=EXPIRY_DAYS))
     return render(request, "pastes/mine.html", {"pastes": pastes})
 
 
@@ -44,6 +52,9 @@ def detail(request, slug):
     try:
         paste = Paste.objects.get(slug=slug)
     except Paste.DoesNotExist:
+        return render(request, "404.html", status=404)
+
+    if timezone.now() - paste.created_at >= timedelta(days=EXPIRY_DAYS):
         return render(request, "404.html", status=404)
 
     is_owner = request.user.is_authenticated and request.user.id == paste.owner_id

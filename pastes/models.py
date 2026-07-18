@@ -7,6 +7,8 @@ from django.urls import reverse
 
 from .wordlist import WORDS
 
+EXPIRY_DAYS = 30
+
 
 def generate_unique_slug():
     while True:
@@ -20,7 +22,11 @@ def generate_unique_slug():
 class Paste(models.Model):
     slug = models.SlugField(max_length=80, unique=True, editable=False)
     owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="pastes"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="pastes",
+        null=True,
+        blank=True,
     )
     content = models.TextField()
     password_hash = models.CharField(max_length=128, blank=True)
