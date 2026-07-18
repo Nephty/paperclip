@@ -188,6 +188,16 @@
               default = "";
               description = "URL path prefix this app is reverse-proxied under (e.g. \"/paperclip\"). Empty means served at the domain root.";
             };
+            signupPasswordHashFile = lib.mkOption {
+              type = lib.types.nullOr lib.types.path;
+              default = null;
+              description = ''
+                Path to a file containing the hashed admin password checked on the
+                hidden signup form (produced via Django's make_password, not
+                plaintext). Generate it out-of-band and never commit it:
+                  python manage.py shell -c "from django.contrib.auth.hashers import make_password; print(make_password('the-actual-secret'))"
+              '';
+            };
           };
 
           config = lib.mkIf cfg.enable {
@@ -209,6 +219,10 @@
                   ${lib.optionalString (cfg.secretKeyFile != null) ''
                     DJANGO_SECRET_KEY="$(cat ${cfg.secretKeyFile})"
                     export DJANGO_SECRET_KEY
+                  ''}
+                  ${lib.optionalString (cfg.signupPasswordHashFile != null) ''
+                    SIGNUP_GATE_PASSWORD_HASH="$(cat ${cfg.signupPasswordHashFile})"
+                    export SIGNUP_GATE_PASSWORD_HASH
                   ''}
                   exec ${cfg.package}/bin/paperclip-server
                 '';
