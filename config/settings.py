@@ -10,6 +10,14 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
 _allowed_hosts = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1")
 ALLOWED_HOSTS = _allowed_hosts.split(",") if _allowed_hosts != "*" else ["*"]
 
+# Set when this app is reverse-proxied under a fixed subpath (e.g. Caddy's
+# handle_path stripping "/paperclip" before forwarding to gunicorn). Left
+# unset/None so `manage.py runserver` in local dev is unaffected.
+FORCE_SCRIPT_NAME = os.environ.get("DJANGO_FORCE_SCRIPT_NAME") or None
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -77,7 +85,7 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
+STATIC_URL = f"{os.environ.get('DJANGO_FORCE_SCRIPT_NAME', '')}/static/"
 STATIC_ROOT = os.environ.get("PAPERCLIP_STATIC_ROOT", str(BASE_DIR / "staticfiles"))
 
 STORAGES = {

@@ -183,6 +183,11 @@
               default = null;
               description = "Path to a file containing the Django SECRET_KEY.";
             };
+            urlPrefix = lib.mkOption {
+              type = lib.types.str;
+              default = "";
+              description = "URL path prefix this app is reverse-proxied under (e.g. \"/paperclip\"). Empty means served at the domain root.";
+            };
           };
 
           config = lib.mkIf cfg.enable {
@@ -197,6 +202,7 @@
                 PAPERCLIP_WORKERS = toString cfg.workers;
                 PAPERCLIP_STATE_DIR = "/var/lib/paperclip";
                 PAPERCLIP_DB_PATH = "/var/lib/paperclip/db.sqlite3";
+                DJANGO_FORCE_SCRIPT_NAME = cfg.urlPrefix;
               };
               serviceConfig = {
                 ExecStart = pkgs.writeShellScript "paperclip-start" ''
