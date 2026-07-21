@@ -1,31 +1,31 @@
 {% extends "base.html" %}
 {% block title %}New paste — Paperclip{% endblock %}
 {% block content %}
-<div class="panel panel-fill">
-  <h1>New paste</h1>
-  <form method="post">
+<div class="bg-[var(--panel)] border border-[var(--border)] rounded-lg p-6 flex-1 flex flex-col">
+  <h1 class="text-2xl font-bold mb-4">New paste</h1>
+  <form method="post" class="flex-1 flex flex-col">
     {% csrf_token %}
     {{ form.content }}
-    {% if form.content.errors %}<ul class="errorlist">{% for e in form.content.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-    <p class="help"><span id="char-counter"></span>{{ limit_message }}</p>
+    {% if form.content.errors %}<ul class="text-[var(--danger)] list-none p-0 my-1 text-sm">{% for e in form.content.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+    <p class="text-[var(--muted)] text-sm mt-1"><span id="char-counter"></span>{{ limit_message }}</p>
 
-    <label for="{{ form.password.id_for_label }}">Password protect</label>
+    <label for="{{ form.password.id_for_label }}" class="block font-semibold mt-4 mb-1.5">Password protect</label>
     {{ form.password }}
-    <p class="help">{{ form.password.help_text }}</p>
+    <p class="text-[var(--muted)] text-sm mt-1">{{ form.password.help_text }}</p>
 
-    <div class="checkbox-row">
+    <div class="flex items-center gap-2 mt-4">
       {{ form.burn_after_read }}
-      <label for="{{ form.burn_after_read.id_for_label }}">{{ form.burn_after_read.label }}</label>
+      <label for="{{ form.burn_after_read.id_for_label }}" class="font-medium">{{ form.burn_after_read.label }}</label>
     </div>
     {% if user.is_authenticated %}
-    <div class="checkbox-row">
+    <div class="flex items-center gap-2 mt-4">
       {{ form.private }}
-      <label for="{{ form.private.id_for_label }}">{{ form.private.label }}</label>
+      <label for="{{ form.private.id_for_label }}" class="font-medium">{{ form.private.label }}</label>
     </div>
     {% endif %}
 
-    <div class="actions">
-      <button type="submit">Create paste</button>
+    <div class="mt-6 flex gap-3">
+      <button type="submit" class="inline-flex items-center justify-center bg-[var(--accent)] text-[var(--accent-text)] border-0 px-[1.1rem] py-[0.6rem] rounded-lg text-[0.95rem] font-semibold cursor-pointer">Create paste</button>
     </div>
   </form>
 </div>

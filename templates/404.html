@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Paste not found — Paperclip{% endblock %}
 {% block content %}
-<div class="panel">
-  <h1>🔍 Paste not found</h1>
+<div class="bg-[var(--panel)] border border-[var(--border)] rounded-lg p-6">
+  <h1 class="text-2xl font-bold mb-4">🔍 Paste not found</h1>
   <p>This paste doesn't exist, has already burned after being read, or isn't visible to you.</p>
-  <div class="actions">
-    <a class="btn" href="{% url 'pastes:create' %}">New paste</a>
+  <div class="mt-6 flex gap-3">
+    <a href="{% url 'pastes:create' %}" class="inline-flex items-center justify-center bg-[var(--accent)] text-[var(--accent-text)] px-[1.1rem] py-[0.6rem] rounded-lg text-[0.95rem] font-semibold no-underline">New paste</a>
   </div>
 </div>
 {% endblock %}

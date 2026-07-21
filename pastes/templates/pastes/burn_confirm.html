@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Confirm read — Paperclip{% endblock %}
 {% block content %}
-<div class="panel">
-  <h1>🔥 This paste burns after reading</h1>
+<div class="bg-[var(--panel)] border border-[var(--border)] rounded-lg p-6">
+  <h1 class="text-2xl font-bold mb-4">🔥 This paste burns after reading</h1>
   <p>Once you reveal it, it will be permanently deleted — no one, including you, will be able to view it again.</p>
   <form method="post">
     {% csrf_token %}
     <input type="hidden" name="confirm_burn" value="1">
-    <div class="actions">
-      <button type="submit" class="danger">Reveal and burn</button>
-      <a class="btn secondary" href="{% url 'pastes:create' %}">Cancel</a>
+    <div class="mt-6 flex gap-3">
+      <button type="submit" class="inline-flex items-center justify-center bg-[var(--danger)] text-[var(--accent-text)] border-0 px-[1.1rem] py-[0.6rem] rounded-lg text-[0.95rem] font-semibold cursor-pointer">Reveal and burn</button>
+      <a href="{% url 'pastes:create' %}" class="inline-flex items-center justify-center bg-transparent text-[var(--text)] border border-[var(--border)] px-[1.1rem] py-[0.6rem] rounded-lg text-[0.95rem] font-semibold no-underline">Cancel</a>
     </div>
   </form>
 </div>

@@ -12,6 +12,7 @@
     })();
   </script>
   <title>{% block title %}Paperclip{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
       color-scheme: light dark;
@@ -56,70 +57,10 @@
       --accent-text: #1c1b19;
       --danger: #e0685a;
     }
-    * { box-sizing: border-box; }
-    html, body {
-      height: 100%;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    header a { color: var(--text); text-decoration: none; }
-    header .brand { font-weight: 700; font-size: 1.1rem; }
-    nav { display: flex; gap: 1rem; align-items: center; font-size: 0.95rem; }
-    nav a:hover { color: var(--accent); }
-    nav form { display: inline; margin: 0; }
-    nav button.link {
-      background: none; border: none; padding: 0; color: var(--text);
-      font: inherit; cursor: pointer; text-decoration: none;
-    }
-    nav button.link:hover { color: var(--accent); }
-    main {
-      flex: 1;
-      width: 75%;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 4rem;
-      display: flex;
-      flex-direction: column;
-    }
-    @media (max-width: 1024px) {
-      main {
-        width: 100%;
-      }
-    }
-    .panel-fill {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .panel-fill form {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .panel-fill textarea {
-      flex: 1;
-    }
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
-    }
-    h1 { font-size: 1.4rem; margin-top: 0; }
-    label { display: block; font-weight: 600; margin: 1rem 0 0.35rem; }
+    body { background: var(--bg); color: var(--text); }
+
+    /* Django renders these widgets without classes, so they're styled here
+       instead of scattering the same utility string across every form. */
     textarea, input[type=text], input[type=password] {
       width: 100%;
       padding: 0.6rem 0.7rem;
@@ -131,164 +72,44 @@
       font-size: 0.95rem;
     }
     textarea { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; resize: vertical; }
-    .checkbox-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.9rem; }
-    .checkbox-row input { width: auto; }
-    .checkbox-row label { margin: 0; font-weight: 500; }
-    .help { color: var(--muted); font-size: 0.85rem; margin-top: 0.25rem; }
-    button, .btn {
-      display: inline-block;
-      background: var(--accent);
-      color: var(--accent-text);
-      border: none;
-      padding: 0.6rem 1.1rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    button.secondary, .btn.secondary {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    button.danger { background: var(--danger); color: var(--accent-text); }
-    .actions { margin-top: 1.5rem; display: flex; gap: 0.75rem; }
-    .errorlist { color: var(--danger); list-style: none; padding: 0; margin: 0.25rem 0; font-size: 0.9rem; }
-    .flags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-    .flag {
-      font-size: 0.78rem;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 0.15rem 0.6rem;
-      color: var(--muted);
-    }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { text-align: left; padding: 0.6rem 0.4rem; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
-    th { color: var(--muted); font-weight: 600; }
-    pre {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.9rem;
-    }
-    .link-box {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      margin: 0.75rem 0;
-    }
-    .link-box input {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    }
-    .muted { color: var(--muted); }
-    .empty { color: var(--muted); padding: 2rem 0; text-align: center; }
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      padding: 1rem;
-    }
-    .modal-overlay[hidden] { display: none; }
-    .modal {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
-      max-width: 360px;
-      width: 100%;
-    }
-    .modal p { margin: 0; }
-    .modal .actions { margin-top: 1.25rem; justify-content: flex-end; }
-    .theme-toggle {
-      display: inline-flex;
-      align-items: center;
-      cursor: pointer;
-    }
-    .theme-toggle input {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .theme-toggle-track {
-      position: relative;
-      display: inline-block;
-      width: 42px;
-      height: 24px;
-      background: var(--border);
-      border-radius: 999px;
-    }
-    .theme-toggle-track::before,
-    .theme-toggle-track::after {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.7rem;
-      line-height: 1;
-    }
-    .theme-toggle-track::before { content: "☀️"; left: 4px; }
-    .theme-toggle-track::after { content: "🌙"; right: 4px; }
-    .theme-toggle-thumb {
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
-      background: var(--panel);
-      border-radius: 50%;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-      transition: transform 0.15s ease;
-    }
-    .theme-toggle input:checked ~ .theme-toggle-track .theme-toggle-thumb {
-      transform: translateX(18px);
-    }
-    .theme-toggle input:focus-visible ~ .theme-toggle-track {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
   </style>
 </head>
-<body>
-  <header>
-    <a class="brand" href="{% url 'pastes:create' %}">📎 Paperclip</a>
-    <nav>
-      <label class="theme-toggle" title="Toggle light / dark theme">
-        <input type="checkbox" id="theme-switch">
-        <span class="theme-toggle-track"><span class="theme-toggle-thumb"></span></span>
-      </label>
-      <a href="{% url 'pastes:create' %}">New paste</a>
+<body class="min-h-screen flex flex-col">
+  <header class="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 sm:px-6 py-2.5 sm:py-3 border-b border-[var(--border)] shadow-[0_1px_3px_rgba(0,0,0,0.06)] backdrop-blur bg-[color-mix(in_srgb,var(--panel)_92%,transparent)]">
+    <a href="{% url 'pastes:create' %}" class="inline-flex items-center gap-2 text-base sm:text-[1.1rem] font-bold tracking-tight">
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--accent)] text-base leading-none">📎</span>
+      Paperclip
+    </a>
+    <nav class="flex items-center gap-1.5 text-[0.85rem] sm:text-[0.92rem] flex-wrap">
+      <a href="{% url 'pastes:create' %}" class="inline-flex items-center px-3 py-2 rounded-full hover:bg-[var(--bg)] hover:text-[var(--accent)] transition-colors">New paste</a>
       {% if user.is_authenticated %}
-        <a href="{% url 'pastes:mine' %}">My pastes</a>
-        <span class="muted">{{ user.username }}</span>
-        <form method="post" action="{% url 'accounts:logout' %}">
+        <a href="{% url 'pastes:mine' %}" class="inline-flex items-center px-3 py-2 rounded-full hover:bg-[var(--bg)] hover:text-[var(--accent)] transition-colors">My pastes</a>
+        <span class="w-px h-[1.4rem] bg-[var(--border)] mx-1"></span>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-[var(--bg)] text-[var(--muted)] text-[0.85rem] pl-2 pr-3 py-[0.35rem]">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[var(--accent)] text-[var(--accent-text)] text-[0.7rem] font-bold uppercase">{{ user.username|slice:":1" }}</span>
+          <span class="hidden sm:inline">{{ user.username }}</span>
+        </span>
+        <form method="post" action="{% url 'accounts:logout' %}" class="inline">
           {% csrf_token %}
-          <button type="submit" class="link">Log out</button>
+          <button type="submit" class="inline-flex items-center px-3 py-2 rounded-full bg-transparent border-0 cursor-pointer hover:bg-[var(--bg)] hover:text-[var(--accent)] transition-colors">Log out</button>
         </form>
       {% else %}
-        <a href="{% url 'accounts:login' %}">Log in</a>
+        <a href="{% url 'accounts:login' %}" class="inline-flex items-center px-3 py-2 rounded-full hover:bg-[var(--bg)] hover:text-[var(--accent)] transition-colors">Log in</a>
       {% endif %}
+      <span class="w-px h-[1.4rem] bg-[var(--border)] mx-1"></span>
+      <button type="button" id="theme-switch" class="inline-flex items-center justify-center w-[2.1rem] h-[2.1rem] rounded-full text-[1.05rem] leading-none bg-transparent border-0 cursor-pointer hover:bg-[var(--bg)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-2" title="Toggle light / dark theme" aria-label="Toggle light / dark theme"></button>
     </nav>
   </header>
-  <main>
+  <main class="flex-1 w-full lg:w-3/4 lg:mx-auto pt-8 px-4 sm:px-6 pb-16 flex flex-col">
     {% block content %}{% endblock %}
   </main>
 
-  <div class="modal-overlay" id="confirm-modal" hidden>
-    <div class="modal">
-      <p id="confirm-modal-message">Are you sure?</p>
-      <div class="actions">
-        <button type="button" class="secondary" id="confirm-modal-cancel">Cancel</button>
-        <button type="button" class="danger" id="confirm-modal-confirm">Delete</button>
+  <div class="fixed inset-0 bg-black/45 hidden items-center justify-center z-[100] p-4" id="confirm-modal">
+    <div class="bg-[var(--panel)] border border-[var(--border)] rounded-lg p-6 max-w-sm w-full">
+      <p class="m-0" id="confirm-modal-message">Are you sure?</p>
+      <div class="mt-5 flex gap-3 justify-end">
+        <button type="button" class="inline-flex items-center justify-center bg-transparent text-[var(--text)] border border-[var(--border)] px-[1.1rem] py-[0.6rem] rounded-lg text-[0.95rem] font-semibold cursor-pointer" id="confirm-modal-cancel">Cancel</button>
+        <button type="button" class="inline-flex items-center justify-center bg-[var(--danger)] text-[var(--accent-text)] border-0 px-[1.1rem] py-[0.6rem] rounded-lg text-[0.95rem] font-semibold cursor-pointer" id="confirm-modal-confirm">Delete</button>
       </div>
     </div>
   </div>
@@ -303,12 +124,17 @@
         return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       }
 
-      switchEl.checked = currentTheme() === "dark";
+      function render() {
+        switchEl.textContent = currentTheme() === "dark" ? "🌙" : "☀️";
+      }
 
-      switchEl.addEventListener("change", function () {
-        var theme = switchEl.checked ? "dark" : "light";
+      render();
+
+      switchEl.addEventListener("click", function () {
+        var theme = currentTheme() === "dark" ? "light" : "dark";
         root.setAttribute("data-theme", theme);
         localStorage.setItem("paperclip-theme", theme);
+        render();
       });
     })();
 
@@ -317,8 +143,14 @@
       var modal = document.getElementById("confirm-modal");
       var message = document.getElementById("confirm-modal-message");
 
+      function openModal() {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+
       function closeModal() {
-        modal.hidden = true;
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
         pendingForm = null;
       }
 
@@ -328,7 +160,7 @@
           event.preventDefault();
           pendingForm = form;
           message.textContent = form.getAttribute("data-confirm");
-          modal.hidden = false;
+          openModal();
         }
       });
 
@@ -336,8 +168,7 @@
 
       document.getElementById("confirm-modal-confirm").addEventListener("click", function () {
         var form = pendingForm;
-        modal.hidden = true;
-        pendingForm = null;
+        closeModal();
         if (form) form.submit();
       });
 
@@ -346,7 +177,7 @@
       });
 
       document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape" && !modal.hidden) closeModal();
+        if (event.key === "Escape" && !modal.classList.contains("hidden")) closeModal();
       });
     })();
   </script>

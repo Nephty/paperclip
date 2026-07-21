@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block title %}{{ paste.slug }} — Paperclip{% endblock %}
 {% block content %}
-<div class="panel">
+<div class="bg-[var(--panel)] border border-[var(--border)] rounded-lg p-6">
   {% if burned %}
-  <p class="flag">🔥 This paste has been read and is now deleted. It won't be viewable again.</p>
+  <p class="inline-block text-xs border border-[var(--border)] rounded-full px-2.5 py-0.5 text-[var(--muted)] mb-4">🔥 This paste has been read and is now deleted. It won't be viewable again.</p>
   {% endif %}
-  <pre>{{ content }}</pre>
-  <p class="muted">Created {{ paste.created_at|date:"Y-m-d H:i" }}</p>
+  <pre class="bg-[var(--bg)] border border-[var(--border)] rounded-lg p-4 overflow-x-auto whitespace-pre-wrap break-words font-mono text-sm">{{ content }}</pre>
+  <p class="text-[var(--muted)] mt-3">Created {{ paste.created_at|date:"Y-m-d H:i" }}</p>
   {% if is_owner and not burned %}
-  <div class="actions">
+  <div class="mt-6 flex gap-3">
     <form method="post" action="{% url 'pastes:delete' paste.slug %}" data-confirm="Delete this paste? This can't be undone.">
       {% csrf_token %}
-      <button type="submit" class="danger">Delete</button>
+      <button type="submit" class="inline-flex items-center justify-center bg-[var(--danger)] text-[var(--accent-text)] border-0 px-[1.1rem] py-[0.6rem] rounded-lg text-[0.95rem] font-semibold cursor-pointer">Delete</button>
     </form>
   </div>
   {% endif %}

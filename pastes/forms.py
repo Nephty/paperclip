@@ -30,7 +30,12 @@ def char_limit_message(user, char_limit):
 class PasteCreateForm(forms.Form):
     content = forms.CharField(
         widget=forms.Textarea(
-            attrs={"rows": 16, "placeholder": "Paste your text here...", "autofocus": True}
+            attrs={
+                "rows": 16,
+                "placeholder": "Paste your text here...",
+                "autofocus": True,
+                "class": "flex-1",
+            }
         )
     )
     password = forms.CharField(
@@ -39,10 +44,14 @@ class PasteCreateForm(forms.Form):
         help_text="Leave blank for no password.",
     )
     burn_after_read = forms.BooleanField(
-        required=False, label="Burn after read (delete once someone views it)"
+        required=False,
+        label="Burn after read (delete once someone views it)",
+        widget=forms.CheckboxInput(attrs={"class": "w-4 h-4 accent-[var(--accent)] cursor-pointer"}),
     )
     private = forms.BooleanField(
-        required=False, label="Private (only visible to me)"
+        required=False,
+        label="Private (only visible to me)",
+        widget=forms.CheckboxInput(attrs={"class": "w-4 h-4 accent-[var(--accent)] cursor-pointer"}),
     )
 
     def __init__(self, *args, char_limit=None, limit_message="", **kwargs):

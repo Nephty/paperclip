@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Sign up — Paperclip{% endblock %}
 {% block content %}
-<div class="panel">
-  <h1>Create an account</h1>
+<div class="bg-[var(--panel)] border border-[var(--border)] rounded-lg p-6">
+  <h1 class="text-2xl font-bold mb-4">Create an account</h1>
   <form method="post">
     {% csrf_token %}
     {% for field in form %}
-      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      <label for="{{ field.id_for_label }}" class="block font-semibold mt-4 mb-1.5">{{ field.label }}</label>
       {{ field }}
-      {% if field.help_text %}<p class="help">{{ field.help_text }}</p>{% endif %}
-      {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      {% if field.help_text %}<p class="text-[var(--muted)] text-sm mt-1">{{ field.help_text }}</p>{% endif %}
+      {% if field.errors %}<ul class="text-[var(--danger)] list-none p-0 my-1 text-sm">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
     {% endfor %}
-    {% if form.non_field_errors %}<ul class="errorlist">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-    <div class="actions">
-      <button type="submit">Sign up</button>
+    {% if form.non_field_errors %}<ul class="text-[var(--danger)] list-none p-0 my-1 text-sm">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+    <div class="mt-6 flex gap-3">
+      <button type="submit" class="inline-flex items-center justify-center bg-[var(--accent)] text-[var(--accent-text)] border-0 px-[1.1rem] py-[0.6rem] rounded-lg text-[0.95rem] font-semibold cursor-pointer">Sign up</button>
     </div>
   </form>
-  <p class="help">Already have an account? <a href="{% url 'accounts:login' %}">Log in</a>.</p>
+  <p class="text-[var(--muted)] text-sm mt-1">Already have an account? <a href="{% url 'accounts:login' %}" class="text-[var(--accent)] hover:underline">Log in</a>.</p>
 </div>
 {% endblock %}
