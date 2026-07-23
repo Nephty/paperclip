@@ -37,7 +37,15 @@
         --danger: #e0685a;
       }
     }
+    /* `color-scheme: light dark` at :root above tells the browser either
+       is fine, so it renders native controls (checkboxes, date pickers,
+       scrollbars) using the OS preference — independent of our own
+       data-theme override. Without narrowing it here, toggling to light
+       on a system set to dark leaves checkboxes etc. rendered dark (a
+       black checkbox background) even though every author-styled color
+       correctly switched via the CSS vars above. */
     :root[data-theme="light"] {
+      color-scheme: light;
       --bg: #f6f6f4;
       --panel: #ffffff;
       --text: #1a1a1a;
@@ -48,6 +56,7 @@
       --danger: #a8362a;
     }
     :root[data-theme="dark"] {
+      color-scheme: dark;
       --bg: #1c1b19;
       --panel: #262421;
       --text: #ece7e0;
