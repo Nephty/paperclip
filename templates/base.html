@@ -75,6 +75,24 @@
       color: var(--text);
       font-family: inherit;
       font-size: 0.95rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    body input[type=text]:hover, body input[type=password]:hover {
+      border-color: color-mix(in srgb, var(--border) 55%, var(--accent) 45%);
+    }
+    body input[type=text]:focus, body input[type=password]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+    /* Checkboxes here already set accent-[var(--accent)] inline via
+       Tailwind utility classes; this is just the fallback for any that
+       don't. */
+    body input[type=checkbox] {
+      accent-color: var(--accent);
+      width: 1.05rem;
+      height: 1.05rem;
+      cursor: pointer;
     }
     body textarea {
       width: 100%;
